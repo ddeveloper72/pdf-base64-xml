@@ -1,4 +1,5 @@
 import io
+import os
 import base64
 from flask import Flask, render_template, request, send_file
 
@@ -90,5 +91,6 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    app.run(host=os.getenv('IP'),
+            port=os.getenv('PORT'),
+            debug=False)
