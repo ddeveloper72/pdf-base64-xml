@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import base64
 import io
 
 app = Flask(__name__)
 
+# Home page
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -56,16 +57,21 @@ def upload_file():
     return render_template('index.html')
 
 
-
-# convert the base64 string back into a virtual pdf document and preview it in the result.html as well as allow the user to download it
-@app.route('/preview', methods=['POST'])
-def preview():
+# Serve the PDF file
+@app.route('/serve_pdf', methods=['POST'])
+def serve_pdf():
     encoded_string = request.form['encoded_string']
+
     # Decode the base64 string
     decoded_string = base64.b64decode(encoded_string)
-    # Create a virtual file to write the decoded content
+
+    # Create a virtual file for the PDF and serve it
     virtual_file = io.BytesIO(decoded_string)
-    return render_template('result.html', virtual_file=virtual_file, encoded_string=encoded_string)           
+    virtual_file.seek(0)
+    
+    # Send the PDF file to the browser
+    return send_file(virtual_file, as_attachment=False, mimetype='application/pdf', download_name="preview.pdf")
+
 
 if __name__ == '__main__':
     app.debug = True
