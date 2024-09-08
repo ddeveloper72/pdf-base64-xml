@@ -4,14 +4,33 @@
 <head>
     <title>PDF Encoder</title>
     <link rel="icon" href="./static/fav.icn" type="image/x-icon">
+    <link rel="stylesheet" href="./static/styles.css">
 </head>
 
 <body>
-    <h1>PDF Encoder</h1>
-    <form method="POST" enctype="multipart/form-data" action="/">
-        <input type="file" name="file" accept=".pdf | .xml">
-        <input type="submit" value="Upload">
-    </form>
+    <nav>
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">pdf to base64 / embedded base64 in xml to pdf</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>PDF Encoder</h1>
+
+        <h3>Instructions</h3>
+        <p>Upload a PDF file to encode it to base64 string</p>
+        <p>Upload an XML file with embedded base64 string to decode it to PDF</p>
+        <br>
+        <p>Encoded pdf files can be previewed</p>
+        <p>Base64 string from an xml document can be saved as a pdf</p>
+        <br>
+        <form method="POST" enctype="multipart/form-data" action="/">
+            
+            <input type="file" name="file" accept=".pdf | .xml">
+            <input type="submit" value="Upload">
+        </form>
+
+    </div>
 </body>
 
 </html>
