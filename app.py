@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, send_file
-import base64
 import io
+import base64
+from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
 
 # Home page
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+# Upload file and display the PDF preview
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -28,8 +34,8 @@ def upload_file():
                     file_contents = file.read()
                     # Encode the file contents to base64
                     encoded_string = base64.b64encode(file_contents).decode('utf-8')
-                    return render_template('result.html', encoded_string=encoded_string)
-                except Exception as e:
+                    return render_template('result.html', encoded_string=encoded_string, page_title='PDF Preview')
+                except IOError as e:
                     return render_template('index.html', error_message=f'Error processing PDF file: {str(e)}')
 
         elif file_extension == 'xml':
@@ -46,9 +52,9 @@ def upload_file():
                         end_index = file_contents.find(end_tag, start_index)
                         if end_index != -1:
                             encoded_string = file_contents[start_index:end_index].decode('utf-8')
-                            return render_template('result.html', encoded_string=encoded_string)
+                            return render_template('result.html', encoded_string=encoded_string, page_title='PDF Preview')
                     return render_template('index.html', error_message='Base64 content not found in XML.')
-                except Exception as e:
+                except IOError as e:
                     return render_template('index.html', error_message=f'Error processing XML file: {str(e)}')
 
         else:
