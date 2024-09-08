@@ -79,6 +79,16 @@ def serve_pdf():
     return send_file(virtual_file, as_attachment=False, mimetype='application/pdf', download_name="preview.pdf")
 
 
+# Page not found error handler
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+# Internal server error handler
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
