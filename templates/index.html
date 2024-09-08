@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>PDF Encoder</title>
-    <link rel="icon" href="./static/fav.icn" type="image/x-icon">
-    <link rel="stylesheet" href="./static/styles.css">
-</head>
-
-<body>
-    <nav>
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">pdf to base64 / embedded base64 in xml to pdf</a>
-        </div>
-    </nav>
-
-    <div class="container">
+{% extends 'base.html' %} {% block content %}
         <h1>PDF Encoder</h1>
 
         <h3>Instructions</h3>
@@ -26,57 +10,16 @@
         <br>
         <form method="POST" enctype="multipart/form-data" action="/">
             
-            <input type="file" name="file" accept=".pdf | .xml">
-            <input type="submit" value="Upload">
+            <div class="btn-container">
+                <div class="button-wrap">
+                    <input id="upload" type="file" name="file" for="upload" accept=".pdf | .xml">
+                    <label class="button" for="upload">Choose File</label>
+                </div>
+                <div class="button-wrap">
+                    <input type="submit" value="Upload">
+                </div>
+
+            </div>
         </form>
 
-    </div>
-</body>
-
-</html>
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>PDF Encoder</title>
-</head>
-<body>
-    <h1>PDF Encoder</h1>
-    
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="pdfFile" accept=".pdf">
-        <button type="submit">Upload</button>
-    </form>
-    
-    <div id="output">
-        <h2>Base64 String:</h2>
-        <textarea id="base64String" readonly></textarea>
-        <button id="copyButton">Copy</button>
-    </div>
-    
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            var fileInput = document.getElementById('pdfFile');
-            var file = fileInput.files[0];
-            
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var base64String = event.target.result;
-                document.getElementById('base64String').value = base64String;
-            };
-            reader.readAsDataURL(file);
-        });
-        
-        document.getElementById('copyButton').addEventListener('click', function() {
-            var base64String = document.getElementById('base64String');
-            base64String.select();
-            document.execCommand('copy');
-            alert('Base64 string copied to clipboard!');
-        });
-    </script>
-</body>
-</html> -->
+{% endblock %}
