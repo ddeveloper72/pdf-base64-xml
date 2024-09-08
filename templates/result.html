@@ -2,35 +2,35 @@
 <html lang="en">
 
 <head>
-    <title>PDF Result</title>
-    <style>
-        .error-message {
-            color: red;
-        }
+    <nav>
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+    </nav>
+    <include src="path/to/index.html"></include>
 
-        canvas {
-            border: 1px solid #ccc;
-            width: auto;
-            max-height: 60vh;
-            scale: 1;
-        }
-    </style>
+    <title>PDF Result</title>
+    <link rel="stylesheet" href="./static/styles.css">
 </head>
 
 <body>
-    <h1>PDF Result</h1>
-    {% if encoded_string %}
-    <div id="pdf-container"></div>
-    <a href="data:application/pdf;base64,{{ encoded_string }}" download="file.pdf">Download Decoded PDF</a>
-    <br>
-    {% else %}
-    <p class="error-message">Invalid base64 code</p>
-    {% endif %}
+    <div class="container">
+        <h1>PDF Result</h1>
+        {% if encoded_string %}
+        <iframe src="data:application/pdf;base64,{{ encoded_string }}"></iframe>
+        <a href="data:application/pdf;base64,{{ encoded_string }}" download="preview.pdf">Download Decoded PDF</a>
+        <br>
+        {% else %}
+        <p class="error-message">Invalid base64 code</p>
+        {% endif %}
 
-    <p>Encoded String:</p>
-    <textarea rows="10" cols="50">{{ encoded_string }}</textarea>
-    <button onclick="copyToClipboard('{{ encoded_string }}')">Copy</button>
+        <div class="base64">
+            <p class="base64-title">Encoded String:</p>
+            <textarea rows="10" cols="50">{{ encoded_string }}</textarea>
+            <button onclick="copyToClipboard('{{ encoded_string }}')">Copy</button>
 
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
     <script>
@@ -40,30 +40,6 @@
         }
     </script>
 
-    <script>
-        var pdfData = atob('{{ encoded_string }}'); // Decode base64 string
-
-        var loadingTask = pdfjsLib.getDocument({ data: pdfData });
-        loadingTask.promise.then(function (pdf) {
-            pdf.getPage(1).then(function (page) {
-                var scale = 1;
-                var viewport = page.getViewport({ scale: scale });
-
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                var renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                page.render(renderContext).promise.then(function () {
-                    document.getElementById('pdf-container').appendChild(canvas);
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
