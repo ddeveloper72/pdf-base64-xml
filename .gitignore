@@ -1,0 +1,8 @@
+# files:
+*.pdf
+*.xml
+
+
+# folders:
+venv/
+__pycache__/
