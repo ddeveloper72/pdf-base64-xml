@@ -25,7 +25,7 @@ def upload_file():
         
         file = request.files['file']
         if file.filename == '':
-            flash('No selected file. Please upload a file.')
+            flash('No selected file. Please upload a file.', 'alert-warning')
             return render_template('index.html')
 
         # Extract and check file extension
