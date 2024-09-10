@@ -1,9 +1,12 @@
 import io
 import os
 import base64
-from flask import Flask, render_template, request, send_file
+import secrets
+from flask import Flask, flash, render_template, request, send_file
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 # Home page
 @app.route('/')
@@ -14,19 +17,23 @@ def index():
 # Upload file and display the PDF preview
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    error = None
     if request.method == 'POST':
         if 'file' not in request.files:
-            return render_template('index.html', error_message='No file part in the request.')
+            flash('No file part in the request. Please upload a file.', 'alert-danger')
+            return render_template('index.html')
         
         file = request.files['file']
         if file.filename == '':
-            return render_template('index.html', error_message='No file selected.')
+            flash('No selected file. Please upload a file.')
+            return render_template('index.html')
 
         # Extract and check file extension
         if '.' in file.filename:
             file_extension = file.filename.rsplit('.', 1)[1].lower()
         else:
-            return render_template('index.html', error_message='Invalid file. Please upload a file with a proper extension.')
+            flash('Invalid file. Please upload a file with a proper extension.', 'alert-danger')
+            return render_template('index.html')
 
         if file_extension == 'pdf':
             if file:
@@ -37,7 +44,8 @@ def upload_file():
                     encoded_string = base64.b64encode(file_contents).decode('utf-8')
                     return render_template('result.html', encoded_string=encoded_string, page_title='PDF Preview')
                 except IOError as e:
-                    return render_template('index.html', error_message=f'Error processing PDF file: {str(e)}')
+                    flash(f'Error processing PDF file: {str(e)}')
+                    return render_template('index.html')
 
         elif file_extension == 'xml':
             if file:
@@ -53,13 +61,18 @@ def upload_file():
                         end_index = file_contents.find(end_tag, start_index)
                         if end_index != -1:
                             encoded_string = file_contents[start_index:end_index].decode('utf-8')
-                            return render_template('result.html', encoded_string=encoded_string, page_title='PDF Preview')
-                    return render_template('index.html', error_message='Base64 content not found in XML.')
+                            return render_template('result.html', encoded_string=encoded_string, page_title='PDF Preview')                      
+                    else:
+                        flash('No base64 string was found in this XML.', 'alert-warning')
+                        return render_template('index.html', error=error)
+                    
                 except IOError as e:
-                    return render_template('index.html', error_message=f'Error processing XML file: {str(e)}')
+                    flash(f'Error processing XML file: {str(e)}')
+                    return render_template('index.html')
 
         else:
-            return render_template('index.html', error_message='Invalid file type. Please upload a PDF or XML file.')
+            flash('Invalid file type. Please upload a PDF or XML file.', 'alert-danger')
+            return render_template('index.html')
 
     return render_template('index.html')
 
