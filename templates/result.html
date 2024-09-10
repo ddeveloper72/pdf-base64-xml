@@ -3,14 +3,14 @@
 <h1>PDF Result</h1>
 {% if encoded_string %}
 <iframe src="data:application/pdf;base64,{{ encoded_string }}"></iframe>
-<a href="data:application/pdf;base64,{{ encoded_string }}" download="preview.pdf">Download Decoded PDF</a>
+<a href="data:application/pdf;base64,{{ encoded_string }}" class="button-link" download="preview.pdf">Download Decoded PDF</a>
 <br>
 {% else %}
 <p class="error-message">Invalid base64 code</p>
 {% endif %}
 
 <div class="base64">
-    <p class="base64-title">Encoded String:</p>
+    <p>Base56 Encoded String:</p>
     <textarea rows="10" cols="50">{{ encoded_string }}</textarea>
     <button class="button" onclick="copyToClipboard('{{ encoded_string }}')">Copy</button>
 
