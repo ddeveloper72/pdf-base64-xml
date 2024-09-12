@@ -1,26 +1,33 @@
 {% extends 'base.html' %} {% block content %}
-<h1>PDF Encoder</h1>
 
-<h3>Instructions</h3>
-<p>Upload a PDF file to encode it to base64 string</p>
-<p>Upload an XML file with embedded base64 string to decode it to PDF</p>
-<br>
-<p>Encoded pdf files can be previewed</p>
-<p>Base64 string from an xml document can be saved as a pdf</p>
-<br>
-<form method="POST" enctype="multipart/form-data" action="/">
+<div class="intro-container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">PDF Encoder</h1>
+            <h3>Instructions</h3>
+            <p>Upload a PDF file to encode it to base64 string</p>
+            <p>Upload an XML file with embedded base64 string to decode it to PDF</p>
+            <br>
+            <p>Encoded pdf files can be previewed</p>
+            <p>Base64 string from an xml document can be saved as a pdf</p>
+            <br>
+            <form method="POST" enctype="multipart/form-data" action="/">
 
-    <div class="btn-container">
-        <div class="button-wrap">
-            <input id="upload" type="file" name="file" for="upload" accept=".pdf | .xml">
-            <label class="button" for="upload">Choose File</label>
+                <div class="btn-container">
+                    <div class="button-wrap">
+                        <input id="upload" type="file" name="file" for="upload" accept=".pdf | .xml">
+                        <label class="button" for="upload">Choose File</label>
 
-        </div>
-        <div class="button-wrap">
-            <input type="submit" value="Upload">
+                    </div>
+                    <div class="button-wrap">
+                        <input type="submit" value="Upload">
+                    </div>
+                </div>
+
+            </form>
+
         </div>
     </div>
-    
-</form>
 
+</div>
 {% endblock %}
