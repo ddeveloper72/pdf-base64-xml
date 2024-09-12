@@ -1,19 +1,38 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>PDF Result</h1>
-{% if encoded_string %}
-<iframe src="data:application/pdf;base64,{{ encoded_string }}"></iframe>
-<a href="data:application/pdf;base64,{{ encoded_string }}" class="button-link" download="preview.pdf">Download Decoded PDF</a>
-<br>
-{% else %}
-<p class="error-message">Invalid base64 code</p>
-{% endif %}
+<div class="results-container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">PDF Result</h1>
+            {% if encoded_string %}
+            <div>
+                <iframe src="data:application/pdf;base64,{{ encoded_string }}"></iframe>
+            </div>
+            <a href="data:application/pdf;base64,{{ encoded_string }}" class="button-link"
+                download="preview.pdf">Download
+                Decoded PDF</a>
+            <br>
+            {% else %}
+            <p class="error-message">Invalid base64 code</p>
+            {% endif %}
 
-<div class="base64">
-    <p>Base56 Encoded String:</p>
-    <textarea rows="10" cols="50">{{ encoded_string }}</textarea>
-    <button class="button" onclick="copyToClipboard('{{ encoded_string }}')">Copy</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Base65 Encoded String:</h3>
+            <div>
+                <textarea>{{ encoded_string }}</textarea>
+            </div>
+            <button class="button" aria-placeholder="bas364 string"
+                onclick="copyToClipboard('{{ encoded_string }}')">Copy</button>
+
+        </div>
+    </div>
+</div>
 
 </div>
+
 
 {% endblock %}
