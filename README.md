@@ -2,8 +2,6 @@
 
 The live application is hosted on Heroku at [pdf-base64-xml](https://ddeveloper72-base64-topdf-1b37f4832a97.herokuapp.com/)
 
-**⚒️ Work in progress 🚧**
-
 This is a Flask application that allows users to upload PDF or XML files and encode them to base64. 
 The encoded files can be previewed and downloaded by the user. 
 
