@@ -120,14 +120,82 @@ Run the application using Docker:
    docker stop pdf-base64-xml  # If using docker run
    ```
 
-### Deployment
+### Cloud Deployment
 
 The application is configured for multiple deployment options:
 
-- **Heroku**: Uses the included `Procfile`
-- **Docker**: Deploy the container to any platform (Azure Container Apps, AWS ECS, Google Cloud Run, etc.)
+#### Heroku
+Uses the included `Procfile`:
+```bash
+git push heroku main
+```
 
-Set environment variables for `IP` and `PORT` as needed for your deployment platform.
+#### Docker to Cloud Platforms
+
+**Azure Container Apps**:
+```bash
+# Login to Azure
+az login
+
+# Create resource group
+az group create --name pdf-base64-rg --location eastus
+
+# Create container registry
+az acr create --resource-group pdf-base64-rg --name pdfbase64acr --sku Basic
+
+# Build and push image
+az acr build --registry pdfbase64acr --image pdf-base64-xml:latest .
+
+# Deploy to Container Apps
+az containerapp create \
+  --name pdf-base64-xml \
+  --resource-group pdf-base64-rg \
+  --image pdfbase64acr.azurecr.io/pdf-base64-xml:latest \
+  --target-port 5000 \
+  --ingress external
+```
+
+**Google Cloud Run**:
+```bash
+# Build and deploy
+gcloud run deploy pdf-base64-xml \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 5000
+```
+
+**AWS ECS/Fargate**:
+```bash
+# Build and push to ECR
+aws ecr create-repository --repository-name pdf-base64-xml
+docker tag pdf-base64-xml:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/pdf-base64-xml:latest
+docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/pdf-base64-xml:latest
+
+# Deploy using ECS Fargate (requires task definition and service configuration)
+```
+
+**Railway**:
+```bash
+# Install Railway CLI
+npm i -g @railway/cli
+
+# Deploy
+railway login
+railway init
+railway up
+```
+
+**Fly.io**:
+```bash
+# Install flyctl
+# Deploy
+fly launch
+fly deploy
+```
+
+Set environment variables (`PORT`, `IP`) as needed for your deployment platform.
 
 ## API Endpoints
 
