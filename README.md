@@ -61,8 +61,9 @@ This tool provides a simple web interface for working with PDFs and base64 encod
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.8+ (for local development)
 - pip (Python package manager)
+- **Optional**: Docker & Docker Compose (for containerized deployment)
 
 ### Local Development
 
@@ -93,12 +94,38 @@ This tool provides a simple web interface for working with PDFs and base64 encod
    http://localhost:5000
    ```
 
+### Docker Deployment
+
+Run the application using Docker:
+
+1. **Using Docker Compose** (recommended):
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Using Docker directly**:
+   ```bash
+   # Build the image
+   docker build -t pdf-base64-xml .
+   
+   # Run the container
+   docker run -d -p 5000:5000 --name pdf-base64-xml pdf-base64-xml
+   ```
+
+3. Access the application at `http://localhost:5000`
+
+4. **Stop the container**:
+   ```bash
+   docker-compose down  # If using docker-compose
+   docker stop pdf-base64-xml  # If using docker run
+   ```
+
 ### Deployment
 
-The application is configured for Heroku deployment with the included `Procfile`:
-```
-web: python app.py
-```
+The application is configured for multiple deployment options:
+
+- **Heroku**: Uses the included `Procfile`
+- **Docker**: Deploy the container to any platform (Azure Container Apps, AWS ECS, Google Cloud Run, etc.)
 
 Set environment variables for `IP` and `PORT` as needed for your deployment platform.
 
